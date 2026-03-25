@@ -20,10 +20,26 @@ X["Type"] = X["Type"].map({"L": 0, "M": 1, "H": 2})
 
 print(X.head())
 
-# Normalización
-
-from sklearn.preprocessing import StandardScaler
+# Dividir datos
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Normalización
 scaler = StandardScaler()
-X = scaler.fit_transform(X)
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Modelo KNN
+knn = KNeighborsClassifier(n_neighbors=5)
+
+# Entrenar modelo
+knn.fit(X_train, y_train)
+
+# Predicciones
+y_pred = knn.predict(X_test)
+
+# Evaluación
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+print(classification_report(y_test, y_pred))
